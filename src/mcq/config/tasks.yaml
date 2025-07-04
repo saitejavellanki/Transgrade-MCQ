@@ -1,0 +1,32 @@
+mcq_extraction_task:
+  description: >
+    Process the raw {OCR_JSON} data from student answer script to identify and extract 
+    all Multiple Choice Question (MCQ) sections. Parse through the OCR output to 
+    locate question patterns, option markers (A, B, C, D), and student markings.
+    Handle OCR noise, misaligned text, and formatting inconsistencies while 
+    maintaining the integrity of the original content.
+  expected_output: >
+    A structured JSON object containing all identified MCQs with the following format:
+    - Question number and text
+    - All available options (A, B, C, D) with their text
+    - Student's marked answer (if any) exactly as detected
+    - Confidence level of OCR detection
+    - Any unclear or ambiguous sections flagged for review
+  agent: ocr_mcq_processor
+
+mcq_restructuring_task:
+  description: >
+    Take the extracted MCQ data and restructure it into a clean, readable format.
+    Organize questions sequentially, ensure proper formatting of options, and 
+    clearly indicate student responses. Preserve all student markings without 
+    any correction or modification, even if answers appear incorrect.
+    Clean up OCR artifacts while maintaining original content meaning.
+  expected_output: >
+    A well-formatted document containing:
+    - Sequentially numbered questions with clear text
+    - Properly formatted multiple choice options
+    - Student's original answers clearly marked
+    - Summary of total questions processed
+    - List of any questions with unclear OCR that need manual review
+    Formatted as structured text or JSON without any answer corrections
+  agent: ocr_mcq_processor
